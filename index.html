@@ -5,6 +5,26 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Glam — Beauty & Skincare</title>
+    <script>
+      // GitHub Pages SPA redirect — restores path from query string
+      ;(function () {
+        var redirect = sessionStorage.redirect
+        delete sessionStorage.redirect
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, null, redirect)
+        }
+        // Handle ?p= redirect from 404.html
+        var search = location.search
+        if (search) {
+          var p = search.slice(1).split('&').reduce(function (p, c) {
+            return (c.split('=')[0] === 'p') ? decodeURIComponent(c.split('=')[1]).replace(/~and~/g, '&') : p
+          }, null)
+          if (p !== null) {
+            window.history.replaceState(null, null, '/' + p + (search.split('&').slice(1).join('&') ? '?' + search.split('&').slice(1).join('&') : '') + location.hash)
+          }
+        }
+      })()
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
